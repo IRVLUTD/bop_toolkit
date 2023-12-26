@@ -335,7 +335,8 @@ def get_split_params(datasets_path, dataset_name, split, split_type=None):
                 "synt": list(range(80)),
             }[split_type]
         elif split == "test":
-            p["scene_ids"] = list(range(48, 60))
+            # p["scene_ids"] = list(range(48, 60))
+            p["scene_ids"] = list(range(0, 40))
 
         p["im_size"] = (640, 480)
 

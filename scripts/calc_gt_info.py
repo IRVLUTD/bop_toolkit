@@ -24,7 +24,7 @@ from bop_toolkit_lib import visibility
 ################################################################################
 p = {
     # See dataset_params.py for options.
-    "dataset": "lm",
+    "dataset": "ycbv",
     # Dataset split. Options: 'train', 'val', 'test'.
     "dataset_split": "test",
     # Dataset split type. None = default. See dataset_params.py for options.

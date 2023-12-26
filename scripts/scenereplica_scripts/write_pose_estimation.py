@@ -125,7 +125,19 @@ if __name__ == "__main__":
 
                 # write to file, format scene_id,im_id,obj_id,score,R,t,time
                 res = {}
-                res['scene_id'] = scene_ids.index(int(exp_data("scene")))
+                scene_id = scene_ids.index(int(exp_data("scene")))
+                if exp_data("order") == 'nearest_first':
+                    scene_id = 2 * scene_id
+                else:
+                    scene_id = 2 * scene_id + 1
+                print(exp_data("order"), scene_id)
+                # verification
+                filename = os.path.join(args.data_dir, 'ycbv', 'test', '%06d' % scene_id, 'scene_info.json')
+                scene_info = inout.load_json(filename)
+                assert exp_data("order") == scene_info['order']
+                assert int(exp_data("scene")) == int(scene_info['scene'])
+
+                res['scene_id'] = scene_id
                 res['im_id'] = seq
                 res['obj_id'] = classes_all.index(object) + 1
                 res['score'] = 1.0
