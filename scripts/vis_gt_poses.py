@@ -18,7 +18,7 @@ from bop_toolkit_lib import visualization
 ################################################################################
 p = {
     # See dataset_params.py for options.
-    "dataset": "lm",
+    "dataset": "ycbv",
     # Dataset split. Options: 'train', 'val', 'test'.
     "dataset_split": "test",
     # Dataset split type. None = default. See dataset_params.py for options.
@@ -27,7 +27,7 @@ p = {
     # for which the GT poses will be visualized. The file is assumed to be stored
     # in the dataset folder. None = all images.
     # 'targets_filename': 'test_targets_bop19.json',
-    "targets_filename": None,
+    "targets_filename": 'test_targets_bop19.json',
     # Select ID's of scenes, images and GT poses to be processed.
     # Empty list [] means that all ID's will be used.
     "scene_ids": [],
@@ -47,9 +47,9 @@ p = {
     # Type of the renderer (used for the VSD pose error function).
     "renderer_type": "vispy",  # Options: 'vispy', 'cpp', 'python'.
     # Folder containing the BOP datasets.
-    "datasets_path": config.datasets_path,
+    "datasets_path": "/home/yuxiang/Projects/bop_toolkit/data",
     # Folder for output visualisations.
-    "vis_path": os.path.join(config.output_path, "vis_gt_poses"),
+    "vis_path": os.path.join("/home/yuxiang/Projects/bop_toolkit/data", "vis_gt_poses"),
     # Path templates for output images.
     "vis_rgb_tpath": os.path.join(
         "{vis_path}", "{dataset}", "{split}", "{scene_id:06d}", "{im_id:06d}.jpg"
@@ -112,6 +112,7 @@ models = {}
 for obj_id in dp_model["obj_ids"]:
     misc.log("Loading 3D model of object {}...".format(obj_id))
     model_path = dp_model["model_tpath"].format(obj_id=obj_id)
+    print(model_path)
     model_color = None
     if not p["vis_orig_color"]:
         model_color = tuple(colors[(obj_id - 1) % len(colors)])
