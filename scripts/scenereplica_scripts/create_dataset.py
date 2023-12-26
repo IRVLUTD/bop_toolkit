@@ -153,7 +153,7 @@ if __name__ == "__main__":
                 RT = T_co @ T_ob
 
                 gt = {}                
-                gt["cam_R_m2c"] =RT[:3, :3].flatten().tolist()
+                gt["cam_R_m2c"] = RT[:3, :3].flatten().tolist()
                 T = 1000 * RT[:3, 3]     # convert to mm
                 gt["cam_t_m2c"] = T.flatten().tolist()
                 gt['obj_id'] = cls_index
