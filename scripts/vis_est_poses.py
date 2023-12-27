@@ -41,7 +41,7 @@ p = {
     # of the format. Example results can be found at:
     # https://bop.felk.cvut.cz/media/data/bop_sample_results/bop_challenge_2019_sample_results.zip
     "result_filenames": [
-        "scripts/scenereplica_scripts/results/gdrnpp_ycbv-test.csv",
+        "scripts/scenereplica_scripts/results/posecnn_ycbv-test.csv",
     ],
     # Folder containing the BOP datasets.
     "datasets_path": config.datasets_path,
