@@ -41,7 +41,7 @@ p = {
     # of the format. Example results can be found at:
     # https://bop.felk.cvut.cz/media/data/bop_sample_results/bop_challenge_2019_sample_results.zip
     "result_filenames": [
-        "/path/to/csv/with/results",
+        "scripts/scenereplica_scripts/results/gdrnpp_ycbv-test.csv",
     ],
     # Folder containing the BOP datasets.
     "datasets_path": config.datasets_path,
@@ -93,7 +93,7 @@ for result_fname in p["result_filenames"]:
     # Create a renderer.
     width, height = dp_split["im_size"]
     ren = renderer.create_renderer(
-        width, height, p["renderer_type"], mode=renderer_mode
+        width, height, p["renderer_type"], mode=renderer_mode, shading="flat"
     )
 
     # Load object models.
