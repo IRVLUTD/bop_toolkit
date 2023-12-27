@@ -26,14 +26,14 @@ def make_args():
     parser.add_argument(
         "-e",
         "--exp_dir",
-        default="./gdrnpp",
+        default="../../data/experiments/gdrnpp",
         help="evaluation directory like poserbpf, posecnn etc..,",
     )
     parser.add_argument(
         "-d",
         "--data_dir",
         type=str,
-        default="/home/benchmark/Datasets/benchmarking/",
+        default="../../data",
         help="Path to parent of model dataset, grasp and scenes dir",
     )
 
@@ -109,7 +109,6 @@ if __name__ == "__main__":
             set_gt_order_dec.difference_update(prev_objs)
             prev_objs.add(_object)
             for object in set_gt_order_dec:
-                print(f"object {object}")
                 est_pose = est_data['estimated_poses'][object]
                 if est_pose is None:
                     print(f"pose of {object} not detected! 100% perception failure")
