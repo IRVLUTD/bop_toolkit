@@ -7,7 +7,13 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-#include  <glad/egl.h>
+#ifdef USE_GLAD
+  #include  <glad/egl.h>
+#else
+  #include <EGL/egl.h>
+  #include <EGL/eglext.h>
+#endif
+
 #include  <glad/gl.h>
 struct EGLInternalData2 {
     bool m_isInitialized;
@@ -32,6 +38,22 @@ struct EGLInternalData2 {
 
 int main(){
 
+#ifndef USE_GLAD
+
+    PFNEGLQUERYDEVICESEXTPROC eglQueryDevicesEXT =
+               (PFNEGLQUERYDEVICESEXTPROC) eglGetProcAddress("eglQueryDevicesEXT");
+    if(!eglQueryDevicesEXT) { 
+         printf("ERROR: Extension eglQueryDevicesEXT not available"); 
+         return(-1); 
+    } 
+    
+    PFNEGLGETPLATFORMDISPLAYEXTPROC eglGetPlatformDisplayEXT =
+               (PFNEGLGETPLATFORMDISPLAYEXTPROC)eglGetProcAddress("eglGetPlatformDisplayEXT");
+    if(!eglGetPlatformDisplayEXT) { 
+         printf("ERROR: Extension eglGetPlatformDisplayEXT not available"); 
+         return(-1);  
+    }
+#endif
 
     int m_windowWidth;
     int m_windowHeight;
@@ -70,11 +92,13 @@ int main(){
     EGLInternalData2* m_data = new EGLInternalData2();
 
     // Load EGL functions
+#ifdef USE_GLAD    
     int egl_version = gladLoaderLoadEGL(NULL);
     if(!egl_version) {
         fprintf(stderr, "failed to EGL with glad.\n");
         exit(EXIT_FAILURE);
     };
+#endif
 
     // Query EGL Devices
     const int max_devices = 32;

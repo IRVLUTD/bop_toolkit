@@ -7,8 +7,17 @@
 #include <stdbool.h>
 #include <unistd.h>
 
+#include <glad/gl.h>
+
+#ifdef USE_GLAD
+
 #include  <glad/egl.h>
-#include  <glad/gl.h>
+
+#else
+#include <EGL/egl.h>
+#include <EGL/eglext.h>
+#endif
+
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
@@ -65,6 +74,22 @@ public:
 
     int init() {
 
+#ifndef USE_GLAD
+    PFNEGLQUERYDEVICESEXTPROC eglQueryDevicesEXT =
+               (PFNEGLQUERYDEVICESEXTPROC) eglGetProcAddress("eglQueryDevicesEXT");
+    if(!eglQueryDevicesEXT) {
+         printf("ERROR: extension eglQueryDevicesEXT not available");
+         return(-1);
+    }
+
+    PFNEGLGETPLATFORMDISPLAYEXTPROC eglGetPlatformDisplayEXT =
+               (PFNEGLGETPLATFORMDISPLAYEXTPROC)eglGetProcAddress("eglGetPlatformDisplayEXT");
+    if(!eglGetPlatformDisplayEXT) {
+         printf("ERROR: extension eglGetPlatformDisplayEXT not available");
+         return(-1);
+    }
+#endif
+
     m_data = new EGLInternalData2();
 
     EGLint egl_config_attribs[] = {EGL_RED_SIZE,
@@ -90,12 +115,14 @@ public:
         cuda_res[i] = NULL;
 
     // Load EGL functions
+#ifdef USE_GLAD    
     int egl_version = gladLoaderLoadEGL(NULL);
     if(!egl_version) {
         fprintf(stderr, "failed to EGL with glad.\n");
         exit(EXIT_FAILURE);
 
     };
+#endif
 
     // Query EGL Devices
     const int max_devices = 32;
@@ -150,6 +177,7 @@ public:
         exit(EXIT_FAILURE);
     }
 
+#ifdef USE_GLAD
     egl_version = gladLoaderLoadEGL(m_data->egl_display);
     if (!egl_version) {
         fprintf(stderr, "Unable to reload EGL.\n");
@@ -157,6 +185,7 @@ public:
     }
     printf("Loaded EGL %d.%d after reload.\n", GLAD_VERSION_MAJOR(egl_version),
            GLAD_VERSION_MINOR(egl_version));
+#endif
 
 
     m_data->success = eglBindAPI(EGL_OPENGL_API);
